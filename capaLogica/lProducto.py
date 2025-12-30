@@ -24,8 +24,9 @@ class LProducto:
 
     def nuevoProducto(self, producto: dict):
         self.__validarProducto(producto)
-        producto['estado'] = 'Activo'
+        producto['estado'] = 'activo'   
         return self.__dProducto.nuevoProducto(producto)
+
 
     def actualizarProducto(self, producto: dict):
         self.__validarProducto(producto)

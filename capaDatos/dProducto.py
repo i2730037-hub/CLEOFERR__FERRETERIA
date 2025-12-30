@@ -17,11 +17,11 @@ class DProducto:
 
     def mostrarProducto(self):
         consulta = (
-            self.__db
-            .table(self.__nombreTabla)
-            .select('*')
-            .eq('estado', 'Activo')
-        )
+        self.__db
+        .table(self.__nombreTabla)
+        .select('*')
+        .eq('estado', 'activo')  
+    )
         return self.__ejecutarConsultas(consulta, 'SELECT')
 
     def obtenerCategorias(self):
