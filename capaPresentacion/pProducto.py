@@ -158,16 +158,22 @@ class PProducto:
                 key="tabla_productos"
             )
 
-        for fila in reversed(edited):
-            if fila["Seleccionar"]:
-                st.session_state.producto_activo = fila
-                break
+        seleccionados = [fila for fila in edited if fila["Seleccionar"]]
+        if seleccionados:
+        
+            seleccionado = seleccionados[-1]
+
+        for fila in edited:
+            fila["Seleccionar"] = (fila == seleccionado)
+
+        st.session_state.producto_activo = seleccionado
 
         seleccionado = st.session_state.producto_activo
 
         with col2:
             
              if seleccionado:
+                st.info(f"Seleccionado:\n{seleccionado['nombre']}")
                 if st.button("Editar"):
                     st.session_state.producto_seleccionado = seleccionado
                     st.session_state.id_producto_sesion = seleccionado["id_producto"]
@@ -193,6 +199,7 @@ class PProducto:
     def eliminarProducto(self, id_producto):
         self.__lProducto.eliminarProducto(id_producto)
         st.success('Producto eliminado correctamente')
+        st.session_state.producto_activo = None
         self.limpiar()
 
     def limpiar(self):
