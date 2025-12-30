@@ -23,6 +23,36 @@ class PProducto:
 
     def __construirInterfaz(self):
         st.title('REGISTRAR PRODUCTOS')
+        
+        st.markdown("""
+            <style>
+            /* BOTÓN GUARDAR / ACTUALIZAR */
+            div.stButton > button {
+                background-color: #1f3a5f;
+                color: white;
+                border-radius: 6px;
+                font-weight: bold;
+                border: none;
+            }
+
+            div.stButton > button:hover {
+                background-color: #16324a;
+                color: white;
+            }
+
+            /* CHECKBOX / SELECCIÓN */
+            div[data-testid="stDataEditor"] input[type="checkbox"] {
+                accent-color: #1f3a5f;
+            }
+
+            /* TABLA HEADER */
+            div[data-testid="stDataEditor"] thead tr th {
+                background-color: #1f3a5f !important;
+                color: white !important;
+            }
+            </style>
+            """, unsafe_allow_html=True)
+
 
 
         if st.session_state.producto_seleccionado:
