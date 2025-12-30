@@ -18,8 +18,8 @@ class PProducto:
             st.session_state.precio_sesion = 0.0
         if 'stock_sesion' not in st.session_state:
             st.session_state.stock_sesion = 0
-        if 'fila_seleccionada' not in st.session_state:
-            st.session_state.fila_seleccionada = None
+        if 'producto_activo' not in st.session_state:
+            st.session_state.producto_activo = None
 
 
         self.__construirInterfaz()
@@ -157,32 +157,17 @@ class PProducto:
                 hide_index=True,
                 key="tabla_productos"
             )
-        seleccionados = None
 
-        for i, fila in enumerate(edited):
+        for fila in reversed(edited):
             if fila["Seleccionar"]:
-                st.session_state.fila_seleccionada = i
+                st.session_state.producto_activo = fila
                 break
 
-
-        for i in range(len(edited)):
-            edited[i]["Seleccionar"] = (i == st.session_state.fila_seleccionada)
-
-        if st.session_state.fila_seleccionada is not None:
-            seleccionado = edited[st.session_state.fila_seleccionada]
+        seleccionado = st.session_state.producto_activo
 
         with col2:
-            seleccionados = [fila for fila in edited if fila["Seleccionar"]]
-
-            if len(seleccionados) > 1:
-                    ultimo = seleccionados[-1]
-                    for fila in edited:
-                        fila["Seleccionar"] = (fila == ultimo)
-
-            seleccionado = seleccionados[-1] if seleccionados else None
-
-
-            if seleccionado:
+            
+             if seleccionado:
                 if st.button("Editar"):
                     st.session_state.producto_seleccionado = seleccionado
                     st.session_state.id_producto_sesion = seleccionado["id_producto"]
