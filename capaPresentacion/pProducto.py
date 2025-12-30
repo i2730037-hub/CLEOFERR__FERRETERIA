@@ -25,33 +25,46 @@ class PProducto:
         st.title('REGISTRAR PRODUCTOS')
         
         st.markdown("""
-            <style>
-            /* BOTÓN GUARDAR / ACTUALIZAR */
-            div.stButton > button {
-                background-color: #1f3a5f;
-                color: white;
-                border-radius: 6px;
-                font-weight: bold;
-                border: none;
-            }
+        <style>
 
-            div.stButton > button:hover {
-                background-color: #16324a;
-                color: white;
-            }
+        /* BOTONES */
+        div.stButton > button {
+            background-color: #1f3a5f;
+            color: white;
+            border-radius: 6px;
+            font-weight: bold;
+            border: none;
+            transition: 0.3s ease;
+        }
 
-            /* CHECKBOX / SELECCIÓN */
-            div[data-testid="stDataEditor"] input[type="checkbox"] {
-                accent-color: #1f3a5f;
-            }
+        div.stButton > button:hover {
+            background-color: #2563eb;
+            box-shadow: 0 0 10px rgba(37, 99, 235, 0.6);
+            transform: scale(1.03);
+        }
 
-            /* TABLA HEADER */
-            div[data-testid="stDataEditor"] thead tr th {
-                background-color: #1f3a5f !important;
-                color: white !important;
-            }
-            </style>
-            """, unsafe_allow_html=True)
+        /* CHECKBOX COLOR */
+        div[data-testid="stDataEditor"] input[type="checkbox"] {
+            accent-color: #2563eb;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+
+        /* CHECKBOX HOVER */
+        div[data-testid="stDataEditor"] input[type="checkbox"]:hover {
+            accent-color: #1d4ed8;
+            box-shadow: 0 0 6px rgba(37, 99, 235, 0.8);
+        }
+
+        /* CABECERA TABLA */
+        div[data-testid="stDataEditor"] thead tr th {
+            background-color: #1f3a5f !important;
+            color: white !important;
+        }
+
+        </style>
+        """, unsafe_allow_html=True)
+
 
 
 
