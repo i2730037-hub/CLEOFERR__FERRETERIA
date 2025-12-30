@@ -20,7 +20,7 @@ class DProducto:
         self.__db
         .table(self.__nombreTabla)
         .select('*')
-        .eq('estado', 'activo')  
+        .order('estado', desc=True)  
     )
         return self.__ejecutarConsultas(consulta, 'SELECT')
 
