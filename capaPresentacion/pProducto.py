@@ -141,13 +141,26 @@ class PProducto:
                 hide_index=True,
                 key="tabla_productos"
             )
+        seleccionados = [i for i, fila in enumerate(edited) if fila["Seleccionar"]]
+
+        if len(seleccionados) > 1:
+            ultimo = seleccionados[-1]
+            for i in range(len(edited)):
+                edited[i]["Seleccionar"] = (i == ultimo)
+            st.session_state["tabla_productos"] = edited
+
+        seleccionado = edited[seleccionados[-1]] if seleccionados else None
 
         with col2:
-            seleccionado = None
-            for fila in edited:
-                if fila["Seleccionar"]:
-                    seleccionado = fila
-                    break
+            seleccionados = [fila for fila in edited if fila["Seleccionar"]]
+
+            if len(seleccionados) > 1:
+                    ultimo = seleccionados[-1]
+                    for fila in edited:
+                        fila["Seleccionar"] = (fila == ultimo)
+
+            seleccionado = seleccionados[-1] if seleccionados else None
+
 
             if seleccionado:
                 if st.button("Editar"):
