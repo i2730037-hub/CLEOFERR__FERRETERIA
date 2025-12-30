@@ -24,7 +24,8 @@ class LProducto:
 
     def nuevoProducto(self, producto: dict):
         self.__validarProducto(producto)
-        producto['estado'] = 'activo'   
+        if producto['stock'] < 0:
+            raise ValueError('stock inválido')  
         return self.__dProducto.nuevoProducto(producto)
 
 

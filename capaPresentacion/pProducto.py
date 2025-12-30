@@ -52,7 +52,7 @@ class PProducto:
             options=[c['nombre'] for c in categorias] if categorias else []
         )
 
-        # ===== BOTONES =====
+        
         if st.session_state.producto_seleccionado:
             if st.button('Actualizar'):
                 try:
@@ -97,7 +97,8 @@ class PProducto:
                 "descripcion": p["descripcion"],
                 "precio": p["precio"],
                 "stock": p["stock"],
-                "nombre_categoria": p["nombre_categoria"]
+                "nombre_categoria": p["nombre_categoria"],
+                "estado": p["estado"]
             }
             tabla.append(fila)
 

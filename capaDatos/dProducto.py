@@ -4,7 +4,7 @@ class DProducto:
     def __init__(self):
         self.__db = ConexionDB().conexionSupabase()
         self.__nombreTabla = 'productos'
-        self.__tablaCategoria = 'categoria'
+        self.__tablaCategoria = 'categorias'
 
     def __ejecutarConsultas(self, consulta, tipoConsulta=None):
         try:
@@ -45,6 +45,6 @@ class DProducto:
         return self.__ejecutarConsultas(
             self.__db
             .table(self.__nombreTabla)
-            .update({'estado': 'Inactivo'})
+            .update({'estado': 'inactivo'})
             .eq('id_producto', id_producto)
         )
