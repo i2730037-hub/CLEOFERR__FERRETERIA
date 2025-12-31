@@ -237,4 +237,6 @@ class PProducto:
         st.session_state.stock_sesion = 0
         st.session_state.confirmar_eliminar = False
         st.session_state.id_eliminar = None
+        if 'tabla_productos' in st.session_state:
+            del st.session_state['tabla_productos']
         st.rerun()

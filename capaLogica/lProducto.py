@@ -23,9 +23,7 @@ class LProducto:
             raise ValueError("Debe seleccionar una categoría")
 
     def nuevoProducto(self, producto: dict):
-        self.__validarProducto(producto)
-        if producto['stock'] < 0:
-            raise ValueError('stock')  
+        self.__validarProducto(producto) 
         return self.__dProducto.nuevoProducto(producto)
 
 

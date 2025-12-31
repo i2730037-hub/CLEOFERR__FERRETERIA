@@ -20,7 +20,6 @@ class DProducto:
         self.__db
         .table(self.__nombreTabla)
         .select('*')
-        .eq('estado', 'activo')
         .order('id_producto')  
     )
         return self.__ejecutarConsultas(consulta, 'SELECT')
@@ -46,6 +45,6 @@ class DProducto:
         return self.__ejecutarConsultas(
             self.__db
             .table(self.__nombreTabla)
-            .update({'estado': 'inactivo'})
+            .delete()
             .eq('id_producto', id_producto)
         )
