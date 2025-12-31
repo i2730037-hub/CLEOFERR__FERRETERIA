@@ -20,6 +20,12 @@ class PProducto:
             st.session_state.stock_sesion = 0
         if 'producto_activo' not in st.session_state:
             st.session_state.producto_activo = None
+            
+        if 'confirmar_eliminar' not in st.session_state:
+            st.session_state.confirmar_eliminar = False
+        if 'id_eliminar' not in st.session_state:
+            st.session_state.id_eliminar = None
+
 
 
         self.__construirInterfaz()
@@ -130,13 +136,16 @@ class PProducto:
         st.divider()
 
         self.mostrarProducto()
+        if st.session_state.confirmar_eliminar:
+            self.eliminarProducto()
+
 
     def mostrarProducto(self):
         listaProducto = self.__lProducto.mostrarProducto()
         tabla = []
 
         for p in listaProducto:
-            fila = {
+            tabla.append( {
                 "Seleccionar": False,
                 "id_producto": p["id_producto"],
                 "nombre": p["nombre"],
@@ -145,46 +154,49 @@ class PProducto:
                 "stock": p["stock"],
                 "nombre_categoria": p["nombre_categoria"],
                 "estado": p["estado"]
-            }
-            tabla.append(fila)
+            })
 
         col1, col2 = st.columns([10, 2])
 
         with col1:
-            edited = st.data_editor(
+            edited = st.data_editor (
                 tabla,
                 use_container_width=True,
                 hide_index=True,
-                key="tabla_productos"
-            )
+                key="tabla_productos",
+                column_config={
+                    "Seleccionar": st.column_config.CheckboxColumn(default=False)
+                }
+        )
 
-        seleccionados = [fila for fila in edited if fila["Seleccionar"]]
-        if seleccionados:
-        
-            seleccionado = seleccionados[-1]
 
-        for fila in edited:
-            fila["Seleccionar"] = (fila == seleccionado)
+        seleccionados = [f for f in edited if f["Seleccionar"]]
 
-        st.session_state.producto_activo = seleccionado
+        if len(seleccionados) == 1:
+            producto_seleccionado = seleccionados[0]
+            id_seleccionado = producto_seleccionado["id_producto"]
+        else:
+            producto_seleccionado = None
+            id_seleccionado = None
 
-        seleccionado = st.session_state.producto_activo
 
         with col2:
-            
-             if seleccionado:
-                st.info(f"Seleccionado:\n{seleccionado['nombre']}")
+             if producto_seleccionado is not None:
+                st.info(f"Seleccionado:\n{producto_seleccionado['nombre']}")
                 if st.button("Editar"):
-                    st.session_state.producto_seleccionado = seleccionado
-                    st.session_state.id_producto_sesion = seleccionado["id_producto"]
-                    st.session_state.nombre_sesion = seleccionado["nombre"]
-                    st.session_state.descripcion_sesion = seleccionado["descripcion"]
-                    st.session_state.precio_sesion = float(seleccionado["precio"])
-                    st.session_state.stock_sesion = int(seleccionado["stock"])
+                    st.session_state.producto_seleccionado = producto_seleccionado
+                    st.session_state.id_producto_sesion = producto_seleccionado["id_producto"]
+                    st.session_state.nombre_sesion = producto_seleccionado["nombre"]
+                    st.session_state.descripcion_sesion = producto_seleccionado["descripcion"]
+                    st.session_state.precio_sesion = float(producto_seleccionado["precio"])
+                    st.session_state.stock_sesion = int(producto_seleccionado["stock"])
                     st.rerun()
 
                 if st.button("Eliminar"):
-                    self.eliminarProducto(seleccionado["id_producto"])
+                    st.session_state.confirmar_eliminar = True
+                    st.session_state.id_eliminar = producto_seleccionado["id_producto"]
+                    st.rerun()
+        
 
     def nuevoProducto(self, producto):
         self.__lProducto.nuevoProducto(producto)
@@ -196,11 +208,25 @@ class PProducto:
         st.success('Producto actualizado correctamente')
         self.limpiar()
 
-    def eliminarProducto(self, id_producto):
-        self.__lProducto.eliminarProducto(id_producto)
-        st.success('Producto eliminado correctamente')
-        st.session_state.producto_activo = None
-        self.limpiar()
+    def eliminarProducto(self):
+        if not st.session_state.confirmar_eliminar:
+            return
+
+        st.warning("¿Está seguro de eliminar este producto?")
+
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("Sí, eliminar", key="confirmar_eliminar_btn"):
+                self.__lProducto.eliminarProducto(st.session_state.id_eliminar)
+                st.success("Producto eliminado correctamente")
+                self.limpiar()
+
+        with col2:
+            if st.button("Cancelar", key="cancelar_eliminar_btn"):
+                st.session_state.confirmar_eliminar = False
+                st.session_state.id_eliminar = None
+                st.rerun()
+        
 
     def limpiar(self):
         st.session_state.producto_seleccionado = None
@@ -209,4 +235,6 @@ class PProducto:
         st.session_state.descripcion_sesion = ''
         st.session_state.precio_sesion = 0.0
         st.session_state.stock_sesion = 0
+        st.session_state.confirmar_eliminar = False
+        st.session_state.id_eliminar = None
         st.rerun()
